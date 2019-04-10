@@ -22,36 +22,34 @@
  * SOFTWARE.
  */
 
-package me.lynxplay.idonis.core.dialect;
-
-import me.lynxplay.idonis.dialect.StatementPromise;
+package me.lynxplay.idonis.dialect.promise;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
- * A valid implementation of the statement promise, which will delegate to {@link Connection#prepareStatement(String)}
+ * {@link StatementPromise} represents a statement which is stored in a string
  */
-public class ValidStatementPromise implements StatementPromise {
-    private String rawContent;
+public interface StatementPromise {
 
     /**
-     * Creates a new {@link ValidStatementPromise} which will try to create the {@link PreparedStatement}
+     * Prepares the statement into a prepared statement on the given connection. If the {@link StatementPromise} is not
+     * present, this call will throw a custom {@link SQLException}
      *
-     * @param rawContent the raw string content
+     * @param connection the connection instance
+     *
+     * @return the created prepared statement.
+     *
+     * @throws SQLException if the internal {@link Connection#prepareStatement(String)} call throws an exception or if
+     * the {@link StatementPromise} is not presenta
      */
-    ValidStatementPromise(String rawContent) {
-        this.rawContent = rawContent;
-    }
+    PreparedStatement prepare(Connection connection) throws SQLException;
 
-    @Override
-    public PreparedStatement prepare(Connection connection) throws SQLException {
-        return connection.prepareStatement(this.rawContent);
-    }
-
-    @Override
-    public boolean isPresent() {
-        return true;
-    }
+    /**
+     * Returns if the promised statement is present
+     *
+     * @return the boolean
+     */
+    boolean isPresent();
 }

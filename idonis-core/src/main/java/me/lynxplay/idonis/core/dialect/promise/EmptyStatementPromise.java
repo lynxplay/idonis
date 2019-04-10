@@ -22,10 +22,10 @@
  * SOFTWARE.
  */
 
-package me.lynxplay.idonis.core.dialect;
+package me.lynxplay.idonis.core.dialect.promise;
 
 import me.lynxplay.idonis.dialect.SQLScriptNotFoundException;
-import me.lynxplay.idonis.dialect.StatementPromise;
+import me.lynxplay.idonis.dialect.promise.StatementPromise;
 
 import java.nio.file.Path;
 import java.sql.Connection;
@@ -41,7 +41,7 @@ public class EmptyStatementPromise implements StatementPromise {
      *
      * @param path the path instanceF
      */
-    EmptyStatementPromise(Path path) {
+    public EmptyStatementPromise(Path path) {
         this.path = path;
     }
 

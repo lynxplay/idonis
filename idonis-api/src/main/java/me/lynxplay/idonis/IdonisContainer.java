@@ -25,7 +25,7 @@
 package me.lynxplay.idonis;
 
 import me.lynxplay.idonis.dialect.StatementKey;
-import me.lynxplay.idonis.dialect.StatementPromise;
+import me.lynxplay.idonis.dialect.promise.StatementPromise;
 
 import java.nio.file.Path;
 import java.util.function.Function;

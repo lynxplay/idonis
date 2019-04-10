@@ -26,6 +26,7 @@ package me.lynxplay.idonis;
 
 import me.lynxplay.idonis.dialect.SQLDialect;
 import me.lynxplay.idonis.dialect.StatementKey;
+import me.lynxplay.idonis.dialect.promise.StatementPromise;
 
 import java.nio.file.Path;
 import java.util.function.Function;
@@ -53,7 +54,7 @@ public interface Idonis {
     /**
      * Returns the map representing the loaded dialect files. This will not cache any previously loaded dialect maps and
      * will always create a fresh copy. This method will created the {@link StatementKey} instances based on the
-     * provided {@link Function}
+     * provided {@link Function}.
      *
      * @param idonisFolder the idonis folder under which all of those statements lie
      * @param dialect the dialect
@@ -64,6 +65,24 @@ public interface Idonis {
     IdonisContainer forDialect(Path idonisFolder,
                                SQLDialect dialect,
                                Function<Path, StatementKey> keyGenerator);
+
+    /**
+     * Returns the map representing the loaded dialect files. This will not cache any previously loaded dialect maps and
+     * will always create a fresh copy. This method will created the {@link StatementKey} instances based on the
+     * provided {@link Function}. The container generates the given {@link StatementPromise} based on the provided
+     * generator function.
+     *
+     * @param idonisFolder the idonis folder under which all of those statements lie
+     * @param dialect the dialect
+     * @param keyGenerator the key generator used to fill the keys.
+     * @param statementParser the parser for the statements if the container generates one
+     *
+     * @return the container instance.
+     */
+    IdonisContainer forDialect(Path idonisFolder,
+                               SQLDialect dialect,
+                               Function<Path, StatementKey> keyGenerator,
+                               Function<String, StatementPromise> statementParser);
 
     /**
      * Creates a simple {@link StatementKey} that is based on a sub path

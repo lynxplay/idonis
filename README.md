@@ -1,5 +1,7 @@
 # idonis
 
+[![Build](https://travis-ci.org/LynxPlay101/idonis.svg?branch=master)](https://travis-ci.org/LynxPlay101/idonis)
+
 A really small SQL script caching framework to store complex SQL statements outside of java code.
 
 Install

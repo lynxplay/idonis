@@ -28,13 +28,17 @@ import me.lynxplay.idonis.Idonis;
 import me.lynxplay.idonis.IdonisContainer;
 import me.lynxplay.idonis.core.dialect.LazyLoadIdonisContainer;
 import me.lynxplay.idonis.core.dialect.StringStatementKey;
+import me.lynxplay.idonis.core.dialect.promise.ValidStatementParser;
 import me.lynxplay.idonis.dialect.SQLDialect;
 import me.lynxplay.idonis.dialect.StatementKey;
+import me.lynxplay.idonis.dialect.promise.StatementPromise;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.function.Function;
 
 public class IdonisCore implements Idonis {
+
 
     /**
      * Returns the map representing the loaded dialect files. This will not cache any previously loaded dialect maps and
@@ -45,11 +49,30 @@ public class IdonisCore implements Idonis {
      * @param dialect the dialect
      * @param keyGenerator the key generator used to fill the keys.
      *
-     * @return the map instance.
+     * @return the container instance.
      */
     @Override
     public IdonisContainer forDialect(Path idonisFolder, SQLDialect dialect, Function<Path, StatementKey> keyGenerator) {
-        return new LazyLoadIdonisContainer(dialect.resolve(idonisFolder), keyGenerator);
+        return this.forDialect(idonisFolder, dialect, keyGenerator, new ValidStatementParser());
+    }
+
+    /**
+     * Returns the map representing the loaded dialect files. This will not cache any previously loaded dialect maps and
+     * will always create a fresh copy. This method will created the {@link StatementKey} instances based on the
+     * provided {@link Function}. The container generates the given {@link StatementPromise} based on the provided
+     * generator function.
+     *
+     * @param idonisFolder the idonis folder under which all of those statements lie
+     * @param dialect the dialect
+     * @param keyGenerator the key generator used to fill the keys.
+     * @param statementParser the parser for the statements if the container generates one
+     *
+     * @return the container instance.
+     */
+    @Override
+    public IdonisContainer forDialect(Path idonisFolder, SQLDialect dialect, Function<Path, StatementKey> keyGenerator,
+                                      Function<String, StatementPromise> statementParser) {
+        return new LazyLoadIdonisContainer(dialect.resolve(idonisFolder), keyGenerator, Files::readString , statementParser);
     }
 
     /**

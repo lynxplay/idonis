@@ -24,6 +24,8 @@
 
 package me.lynxplay.idonis.dialect;
 
+import me.lynxplay.idonis.dialect.promise.StatementPromise;
+
 import java.sql.SQLException;
 
 /**

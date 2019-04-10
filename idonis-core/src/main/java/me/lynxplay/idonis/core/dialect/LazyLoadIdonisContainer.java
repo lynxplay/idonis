@@ -26,8 +26,9 @@ package me.lynxplay.idonis.core.dialect;
 
 import me.lynxplay.idonis.IdonisContainer;
 import me.lynxplay.idonis.core.dialect.file.FileStringReader;
+import me.lynxplay.idonis.core.dialect.promise.EmptyStatementPromise;
 import me.lynxplay.idonis.dialect.StatementKey;
-import me.lynxplay.idonis.dialect.StatementPromise;
+import me.lynxplay.idonis.dialect.promise.StatementPromise;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -43,15 +44,17 @@ public class LazyLoadIdonisContainer implements IdonisContainer {
     private Path root;
     private Function<Path, StatementKey> keyGenerator;
     private FileStringReader fileStringReader;
+    private Function<String, StatementPromise> statementParser;
 
     /**
      * Creates a new idonis map based on the root path
      *
      * @param root the root
      * @param keyGenerator the key generator
+     * @param statementParser the parser for the statements
      */
-    public LazyLoadIdonisContainer(Path root, Function<Path, StatementKey> keyGenerator) {
-        this(root, keyGenerator, Files::readString);
+    public LazyLoadIdonisContainer(Path root, Function<Path, StatementKey> keyGenerator, Function<String, StatementPromise> statementParser) {
+        this(root, keyGenerator, Files::readString, statementParser);
     }
 
     /**
@@ -60,11 +63,13 @@ public class LazyLoadIdonisContainer implements IdonisContainer {
      * @param root the root
      * @param keyGenerator the key generator
      * @param fileReader the file reader function
+     * @param statementParser the parser for the statements
      */
-    public LazyLoadIdonisContainer(Path root, Function<Path, StatementKey> keyGenerator, FileStringReader fileReader) {
+    public LazyLoadIdonisContainer(Path root, Function<Path, StatementKey> keyGenerator, FileStringReader fileReader, Function<String, StatementPromise> statementParser) {
         this.root = root;
         this.keyGenerator = keyGenerator;
         this.fileStringReader = fileReader;
+        this.statementParser = statementParser;
     }
 
     /**
@@ -79,7 +84,7 @@ public class LazyLoadIdonisContainer implements IdonisContainer {
     public StatementPromise using(StatementKey key) {
         Path resolvedPath = key.resolveFile(root);
         return this.wrapped.computeIfAbsent(key, k -> this.read(resolvedPath)
-                .<StatementPromise>map(ValidStatementPromise::new)
+                .map(this.statementParser)
                 .orElse(new EmptyStatementPromise(resolvedPath)));
     }
 

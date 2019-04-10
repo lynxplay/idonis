@@ -1,4 +1,7 @@
+/*
+@uuid=1
+ */
 INSERT INTO test_table
     (id, data)
-VALUES (?, ?)
+VALUES (@uuid, @id)
 ON CONFLICT DO UPDATE SET data=excluded.data
