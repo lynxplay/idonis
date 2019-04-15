@@ -28,7 +28,7 @@ import me.lynxplay.idonis.Idonis;
 import me.lynxplay.idonis.IdonisContainer;
 import me.lynxplay.idonis.core.dialect.LazyLoadIdonisContainer;
 import me.lynxplay.idonis.core.dialect.StringStatementKey;
-import me.lynxplay.idonis.core.dialect.promise.ValidStatementParser;
+import me.lynxplay.idonis.core.dialect.promise.parser.ValidStatementParser;
 import me.lynxplay.idonis.dialect.SQLDialect;
 import me.lynxplay.idonis.dialect.StatementKey;
 import me.lynxplay.idonis.dialect.promise.StatementPromise;

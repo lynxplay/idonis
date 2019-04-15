@@ -26,7 +26,7 @@ package me.lynxplay.idonis.core.dialect;
 
 import me.lynxplay.idonis.Idonis;
 import me.lynxplay.idonis.core.IdonisCore;
-import me.lynxplay.idonis.core.dialect.promise.ValidStatementParser;
+import me.lynxplay.idonis.core.dialect.promise.parser.ValidStatementParser;
 import me.lynxplay.idonis.core.util.ConnectionMock;
 import me.lynxplay.idonis.dialect.SQLScriptNotFoundException;
 import org.junit.Before;
