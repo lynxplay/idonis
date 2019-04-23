@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -94,16 +93,14 @@ public class ValidStatementParser implements Function<String, StatementPromise> 
                     int targetLength = found.getValue().getTarget().length();
                     buffer.replace(found.getKey(), found.getKey() + targetLength, "?"); // Replace the found key in the cache
                     indexers.forEach(i -> i.adjustCache(-targetLength + 1)); // Adjust all caches
+                    normalParameter.adjustCache(-targetLength + 1); // Adjust ? indexer
                 }
 
                 actualToFake.add(nextFakeIndex);
-                subIndex = found.getKey() + 1; // Skip to after variable as we just replaced it
+                subIndex = found.getKey() + 1; // Skip to after variable as we just replaced it with a ?
             }
 
             source = buffer.toString();
-
-            AtomicInteger index = new AtomicInteger(1);
-            actualToFake.forEach(i -> System.out.println(index.getAndIncrement() + " -> " + (i + 1)));
         }
 
         String trimmed = source.replaceAll(System.lineSeparator(), " ").replaceAll(" +", " ");

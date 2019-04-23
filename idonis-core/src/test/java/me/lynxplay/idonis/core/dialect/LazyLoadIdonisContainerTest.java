@@ -29,7 +29,6 @@ import me.lynxplay.idonis.core.IdonisCore;
 import me.lynxplay.idonis.core.dialect.promise.parser.ValidStatementParser;
 import me.lynxplay.idonis.core.util.ConnectionMock;
 import me.lynxplay.idonis.dialect.SQLScriptNotFoundException;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -41,14 +40,9 @@ import static org.junit.Assert.assertTrue;
 
 public class LazyLoadIdonisContainerTest {
 
-    private LazyLoadIdonisContainer container;
     private Idonis idonis = new IdonisCore();
-
-    @Before
-    public void before() {
-        this.container = new LazyLoadIdonisContainer(Path.of("src/test/resources/sql-scripts/sqlite"),
-                idonis::simpleStringPath, new ValidStatementParser());
-    }
+    private LazyLoadIdonisContainer container = new LazyLoadIdonisContainer(Path.of("src/test/resources/sql-scripts/sqlite"),
+            idonis::simpleStringPath, new ValidStatementParser());
 
     @Test(expected = SQLScriptNotFoundException.class)
     public void testNotExistingFile() throws SQLException {

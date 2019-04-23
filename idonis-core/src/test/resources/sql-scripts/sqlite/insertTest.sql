@@ -1,8 +1,9 @@
 /*
-_uuid
-_data
+@uuid
+@data
  */
 INSERT INTO test_table
-    (id, data)
-VALUES (_data, ?)
-ON CONFLICT DO UPDATE SET data=_uuid;
+    (id, data, other_data)
+VALUES (@data, ?, @data)
+ON CONFLICT(id) DO UPDATE SET data=@uuid,
+                              other_data=@data;
