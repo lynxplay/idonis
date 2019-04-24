@@ -47,7 +47,7 @@ public class UsabilityTest {
         Class.forName("org.sqlite.JDBC");
         Connection connection = DriverManager.getConnection("jdbc:sqlite::memory:");
 
-        connection.prepareStatement("CREATE TABLE test (id INTEGER, name VARCHAR(16));").executeUpdate();
+        connection.prepareStatement("CREATE TABLE test (id INTEGER PRIMARY KEY, name VARCHAR(16));").executeUpdate();
 
         Idonis idonis = ServiceLoader.load(Idonis.class).findFirst().orElseThrow();
         IdonisContainer container = idonis.forDialect(Path.of("src/test/resources/sql-scripts"), SQLDialect.SQLITE);
@@ -66,6 +66,24 @@ public class UsabilityTest {
             int id = resultSet.getInt("id");
 
             assertEquals("LynxPlay", name);
+            assertEquals(0, id);
+        }
+
+        // Test the upsert portion of the script
+        try (PreparedStatement s = container.using("insertData.sql").prepare(connection)) {
+            s.setString(1, "LynxPlay101");
+            s.setInt(2, 0);
+            s.executeUpdate();
+        }
+
+        try (PreparedStatement s = connection.prepareStatement("SELECT * FROM test")) {
+            ResultSet resultSet = s.executeQuery();
+            assertTrue(resultSet.next());
+
+            String name = resultSet.getString("name");
+            int id = resultSet.getInt("id");
+
+            assertEquals("LynxPlay101", name);
             assertEquals(0, id);
         }
 

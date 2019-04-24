@@ -23,15 +23,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-if ! hash git 2>/dev/null; then
-  echo -e 'Could not find tool:\e[91m git'
-  exit 1
-fi
-
-if ! hash mvn 2>/dev/null; then
-  echo -e 'Could not find tool:\e[91m mvn'
-  exit 1
-fi
+for TOOL in mvn git; do
+    if ! hash ${TOOL} 2>/dev/null; then
+      echo "Could not find required tool: \\033[1m${TOOL}"
+      exit 1
+    fi
+done
 
 git clone https://github.com/LynxPlay101/idonis.git .idonis
 cd .idonis

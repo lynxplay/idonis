@@ -55,3 +55,18 @@ try(PreparedStatement s = container.using("mySqlScript.sql").prepare(mySqlConnec
     ...
 }
 ```
+
+As SQL scripts may not preserve placeholder order between languages, `idonis` also provides a simple way to abstract 
+templates as well. When defining an SQL script, you should replace all `?` templates with idonis variables. 
+For example, this UPSERT SQLite3 script:
+```sql
+/*
+@id
+@first_name
+@last_name
+*/
+INSERT INTO table (id, first_name, last_name)
+    VALUES (@id, @first_name, @last_name)
+    ON CONFLICT(id) DO UPDATE SET first_name=@first_name,
+                                  last_name=@last_name;
+```
