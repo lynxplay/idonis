@@ -29,6 +29,8 @@ import me.lynxplay.idonis.dialect.promise.StatementPromise;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -56,9 +58,11 @@ public class ValidStatementParser implements Function<String, StatementPromise> 
     @Override
     public StatementPromise apply(String source) {
         Matcher matcher = COMMENT_PATTERN.matcher(source);
+        Map<Integer, List<Integer>> fakeIndexMap = new HashMap<>();
+
         if (matcher.find()) {
             String group = matcher.group(1);
-            source = matcher.replaceAll("");
+            source = matcher.replaceAll(""); // Remove comment from actual SQL script
 
             StringBuilder buffer = new StringBuilder(source);
 
@@ -100,10 +104,15 @@ public class ValidStatementParser implements Function<String, StatementPromise> 
                 subIndex = found.getKey() + 1; // Skip to after variable as we just replaced it with a ?
             }
 
+            for (int i = 0; i < actualToFake.size(); i++) {
+                // Add one to all indices as SQL starts at 1
+                fakeIndexMap.computeIfAbsent(actualToFake.get(i) + 1, $ -> new LinkedList<>()).add(i + 1);
+            }
+
             source = buffer.toString();
         }
 
         String trimmed = source.replaceAll(System.lineSeparator(), " ").replaceAll(" +", " ");
-        return new ValidStatementPromise(trimmed, new int[0][0]);
+        return new ValidStatementPromise(trimmed, fakeIndexMap);
     }
 }

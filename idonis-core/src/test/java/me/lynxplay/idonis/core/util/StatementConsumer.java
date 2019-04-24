@@ -22,42 +22,13 @@
  * SOFTWARE.
  */
 
-package me.lynxplay.idonis.core.dialect.promise;
+package me.lynxplay.idonis.core.util;
 
-import me.lynxplay.idonis.dialect.promise.StatementPromise;
-
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.Map;
 
-/**
- * A valid implementation of the statement promise, which will delegate to {@link Connection#prepareStatement(String)}
- */
-public class ValidStatementPromise implements StatementPromise {
+public interface StatementConsumer {
 
-    private String rawContent;
-    private Map<Integer, List<Integer>> replacement;
+    void accept(PreparedStatement statement) throws SQLException;
 
-    /**
-     * Creates a new {@link ValidStatementPromise} which will try to create the {@link PreparedStatement}
-     *
-     * @param rawContent the raw string content
-     * @param replacement the variable replacements defined in the comment
-     */
-    public ValidStatementPromise(String rawContent, Map<Integer, List<Integer>> replacement) {
-        this.rawContent = rawContent;
-        this.replacement = replacement;
-    }
-
-    @Override
-    public PreparedStatement prepare(Connection connection) throws SQLException {
-        return new ValidStatementWrapper(connection.prepareStatement(this.rawContent), replacement);
-    }
-
-    @Override
-    public boolean isPresent() {
-        return true;
-    }
 }

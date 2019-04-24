@@ -24,40 +24,18 @@
 
 package me.lynxplay.idonis.core.dialect.promise;
 
-import me.lynxplay.idonis.dialect.promise.StatementPromise;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.Map;
 
 /**
- * A valid implementation of the statement promise, which will delegate to {@link Connection#prepareStatement(String)}
+ * A simple index consumer that consumes an index and may throw a {@link java.sql.SQLException}
  */
-public class ValidStatementPromise implements StatementPromise {
-
-    private String rawContent;
-    private Map<Integer, List<Integer>> replacement;
+public interface StatementIndexConsumer {
 
     /**
-     * Creates a new {@link ValidStatementPromise} which will try to create the {@link PreparedStatement}
+     * Accepts the given index.
      *
-     * @param rawContent the raw string content
-     * @param replacement the variable replacements defined in the comment
+     * @param index the index
      */
-    public ValidStatementPromise(String rawContent, Map<Integer, List<Integer>> replacement) {
-        this.rawContent = rawContent;
-        this.replacement = replacement;
-    }
+    void accept(int index) throws SQLException;
 
-    @Override
-    public PreparedStatement prepare(Connection connection) throws SQLException {
-        return new ValidStatementWrapper(connection.prepareStatement(this.rawContent), replacement);
-    }
-
-    @Override
-    public boolean isPresent() {
-        return true;
-    }
 }
