@@ -30,7 +30,7 @@ for TOOL in mvn git; do
     fi
 done
 
-git clone https://github.com/LynxPlay101/idonis.git .idonis
+git clone https://github.com/captis/idonis.git .idonis
 cd .idonis
 mvn clean install
 cd .. && rm -r -f .idonis
