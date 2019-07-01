@@ -1,6 +1,6 @@
 # idonis
 
-[![Build](https://travis-ci.org/LynxPlay101/idonis.svg?branch=master)](https://travis-ci.org/LynxPlay101/idonis)
+[![Build](https://travis-ci.org/captis/idonis.svg?branch=master)](https://travis-ci.org/captis/idonis)
 
 A really small SQL script caching framework to store complex SQL statements outside of java code.
 
@@ -11,7 +11,7 @@ As of right now, idonis was not accepted onto maven central and therefore you wi
 into your local maven repository. You can install the project using:
 
 ```bash
-curl -sL https://raw.githubusercontent.com/LynxPlay101/idonis/master/scripts/downloadLatest.sh | bash
+curl -sL https://raw.githubusercontent.com/captis/idonis/master/scripts/downloadLatest.sh | bash
 ```
 
 Usage
