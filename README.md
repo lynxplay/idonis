@@ -1,6 +1,6 @@
 # idonis
 
-[![Build](https://travis-ci.org/captis/idonis.svg?branch=master)](https://travis-ci.org/captis/idonis)
+[![Build](https://travis-ci.org/LynxPlay/idonis.svg?branch=master)](https://travis-ci.org/LynxPlay/idonis)
 
 A really small SQL script caching framework to store complex SQL statements outside of java code.
 
