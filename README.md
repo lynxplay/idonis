@@ -11,7 +11,7 @@ As of right now, idonis was not accepted onto maven central and therefore you wi
 into your local maven repository. You can install the project using:
 
 ```bash
-curl -sL https://raw.githubusercontent.com/captis/idonis/master/scripts/downloadLatest.sh | bash
+curl -sL https://raw.githubusercontent.com/lynxplay/idonis/master/scripts/downloadLatest.sh | bash
 ```
 
 Usage
