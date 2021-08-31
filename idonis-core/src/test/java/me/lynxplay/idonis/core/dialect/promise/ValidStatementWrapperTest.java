@@ -617,12 +617,12 @@ public class ValidStatementWrapperTest {
         testReturn(Statement::getMoreResults);
     }
 
-    @Test(expected = SQLException.class)
+    @Test
     public void setFetchDirection() throws SQLException, IllegalAccessException {
         test(s -> s.setFetchDirection(ResultSet.FETCH_FORWARD));
     }
 
-    @Test(expected = SQLException.class)
+    @Test
     public void getFetchDirection() throws SQLException, IllegalAccessException {
         testReturn(Statement::getFetchDirection);
     }
